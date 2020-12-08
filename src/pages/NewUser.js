@@ -96,10 +96,10 @@ class NewUser extends React.Component {
                 onChange={this.handleInputChange} />
             </label>
             <br />
-              <label>
-                Submit: 
-                <input type="submit" value="Submit" />
-              </label>
+            <label>
+              Submit: 
+              <input type="submit" value="Submit" />
+            </label>
           </form>
         </header>
       </div>
