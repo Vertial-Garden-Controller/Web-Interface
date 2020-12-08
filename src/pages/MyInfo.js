@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { options } from '../App';
 
 class MyInfo extends React.Component {
   constructor(props) {
@@ -23,20 +24,22 @@ class MyInfo extends React.Component {
   }
 
   handleSubmit(event) {
-    axios.get(`http://localhost:5001/user/${this.state.user_id}`)
+    axios.get(`/user/${this.state.user_id}`, options)
     .then((response) => {
-      alert(
-        `User information:
-        ${response.data.user.firstname},
-        ${response.data.user.middlename},
-        ${response.data.user.lastname},
-        ${response.data.user.email},
-        ${response.data.user.password},
-        `
-      );
+      alert(`
+        User information:
+        First name: ${response.data.user.firstname},
+        Middle name: ${response.data.user.middlename ? response.data.user.middlename : "*not provided"},
+        Last name: ${response.data.user.lastname ? response.data.user.lastname : "*not provided"},
+        Email address: ${response.data.user.email},
+        password (shh): ${response.data.user.password ? response.data.user.password : "*not provided"}
+      `);
     })
     .catch((error) => {
-      console.log(error);
+      alert(`
+        ERROR: ${error.response.data.error}
+        DETAIL: ${error.response.data.detail}
+      `)
     });
     event.preventDefault();
   }

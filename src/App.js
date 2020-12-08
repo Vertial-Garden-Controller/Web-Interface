@@ -14,6 +14,11 @@ import HomePage from './pages/HomePage';
 import NewUser from './pages/NewUser';
 import MyInfo from './pages/MyInfo';
 
+export const options = {
+  baseURL: "http://localhost:5001",
+  responseType: "application/json"
+};
+
 /**
  * All routes go here.
  * Don't forget to import the components above after adding new route.

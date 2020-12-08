@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { options } from '../App';
 
 class NewUser extends React.Component {
   constructor(props) {
@@ -26,18 +27,21 @@ class NewUser extends React.Component {
   }
 
   handleSubmit(event) {
-    axios.post('http://localhost:5001/user/signup', {
+    axios.post('/user/signup', {
       firstname: this.state.firstname,
       middlename: this.state.middlename,
       lastname: this.state.lastname,
       email: this.state.emailAddress,
       password: this.state.password,
-    })
+    }, options)
     .then(function (response) {
-      alert("New User Created With ID: " + response.data.user_id);
+      alert("Your User Id is: " + response.data.user_id);
     })
     .catch(function (error) {
-      console.log(error);
+      alert(`
+        ERROR: ${error.response.data.error}
+        DETAIL: ${error.response.data.detail}
+      `)
     });
     event.preventDefault();
   }
