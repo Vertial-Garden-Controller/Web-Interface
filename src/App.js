@@ -10,7 +10,9 @@ import {
 /**
  * Import all page components here
  */
-import { NewUser } from './pages/newUser';
+import HomePage from './pages/HomePage';
+import NewUser from './pages/NewUser';
+import MyInfo from './pages/MyInfo';
 
 /**
  * All routes go here.
@@ -26,10 +28,10 @@ export default function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/myinfo">My Info</Link>
             </li>
             <li>
-              <Link to="/users/signup">Users</Link>
+              <Link to="/users/signup">Signup</Link>
             </li>
           </ul>
         </nav>
@@ -37,8 +39,14 @@ export default function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
+          <Route path="/myinfo">
+            <MyInfo />
+          </Route>
           <Route path="/users/signup">
             <NewUser />
+          </Route>
+          <Route path="/">
+            <HomePage />
           </Route>
         </Switch>
       </div>
