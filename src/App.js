@@ -1,120 +1,47 @@
 import React from 'react';
-import axios from 'axios';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
-class NewUser extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstname: '',
-      middlename: '',
-      lastname: '',
-      emailAddress: '',
-      password: '',
-    };
+/**
+ * Import all page components here
+ */
+import { NewUser } from './pages/newUser';
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+/**
+ * All routes go here.
+ * Don't forget to import the components above after adding new route.
+ */
+export default function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/users/signup">Users</Link>
+            </li>
+          </ul>
+        </nav>
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
-
-  handleSubmit(event) {
-    axios.post('http://localhost:5001/user/signup', {
-      firstname: this.state.firstname,
-      middlename: this.state.middlename,
-      lastname: this.state.lastname,
-      email: this.state.emailAddress,
-      password: this.state.password,
-    })
-    .then(function (response) {
-      alert("New User Created With ID: " + response.data.user_id);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-    event.preventDefault();
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          First Name:
-          <input
-            name="firstname"
-            type="text"
-            value={this.state.firstname}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Middle Name:
-          <input
-            name="middlename"
-            type="text"
-            value={this.state.middlename}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Last Name:
-          <input
-            name="lastname"
-            type="text"
-            value={this.state.lastname}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Email Address:
-          <input
-            name="emailAddress"
-            type="text"
-            value={this.state.emailAddress}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            name="password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-          <label>
-            Submit: 
-            <input type="submit" value="Submit" />
-          </label>
-      </form>
-    );
-  }
-}
-
-class App extends React.Component {
-
-  render () {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Welcome to Garden Manager*!
-            Signup with the form below:
-          </p>
-          <NewUser />
-        </header>
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/users/signup">
+            <NewUser />
+          </Route>
+        </Switch>
       </div>
-    );
-  }
+    </Router>
+  );
 }
-
-export default App;
