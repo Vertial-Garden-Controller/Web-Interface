@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { options } from '../App'
+import { number } from 'prop-types'
 
 class NewGarden extends React.Component {
   constructor(props) {
@@ -19,21 +20,20 @@ class NewGarden extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount() {
-    console.log(this.state.user_id)
-    axios
-      .get(`/user/${this.state.user_id}`, options)
-      .then((response) => {
-        this.setState({
-          firstname: response.data.user.firstname,
-        })
-      })
+  async componentDidMount() {
+    const res = await axios
+      .get(`/user/${this.props.user_id}`, options)
       .catch((error) => {
-        alert(`
-        ERROR: ${error.response.data.error}
-        DETAIL: ${error.response.data.detail}
-      `)
+        if (error.response) {
+          alert(`
+            ERROR: ${error.response.data.error}
+            DETAIL: ${error.response.data.detail}
+          `)
+        }
       })
+    this.setState({
+      firstname: res.data.user.firstname,
+    })
   }
 
   handleInputChange(event) {
@@ -75,11 +75,15 @@ class NewGarden extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <p>Hello, {this.state.firstname}!</p>
+          <p>Hello{this.state.firstname ? ', ' + this.state.firstname : ''}!</p>
         </header>
       </div>
     )
   }
+}
+
+NewGarden.propTypes = {
+  user_id: number,
 }
 
 export default NewGarden

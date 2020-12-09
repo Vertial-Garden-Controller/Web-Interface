@@ -1,6 +1,9 @@
 import React from 'react'
 import axios from 'axios'
 import { options } from '../App'
+import { number, func } from 'prop-types'
+import { Link } from 'react-router-dom'
+// import Routes from '../routes'
 
 class NewUser extends React.Component {
   constructor(props) {
@@ -11,7 +14,9 @@ class NewUser extends React.Component {
       lastname: '',
       emailAddress: '',
       password: '',
+      user_id: 1,
     }
+    this.value = 0
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -26,8 +31,8 @@ class NewUser extends React.Component {
     })
   }
 
-  handleSubmit(event) {
-    axios
+  async postNewUser() {
+    const res = await axios
       .post(
         '/user/signup',
         {
@@ -39,10 +44,7 @@ class NewUser extends React.Component {
         },
         options
       )
-      .then(function (response) {
-        alert('Your User Id is: ' + response.data.user_id)
-      })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response) {
           alert(`
           ERROR: ${error.response.data.error}
@@ -50,7 +52,12 @@ class NewUser extends React.Component {
         `)
         }
       })
+    this.props.updateUserId(parseInt(res.data.user_id))
+  }
+
+  async handleSubmit(event) {
     event.preventDefault()
+    await this.postNewUser()
   }
 
   render() {
@@ -114,10 +121,16 @@ class NewUser extends React.Component {
               <input type="submit" value="Submit" />
             </label>
           </form>
+          <Link to="/mygarden">My Garden</Link>
         </header>
       </div>
     )
   }
+}
+
+NewUser.propTypes = {
+  user_id: number,
+  updateUserId: func,
 }
 
 export default NewUser
