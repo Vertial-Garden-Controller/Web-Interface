@@ -1,23 +1,19 @@
-import React from 'react';
-import './utils/App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import React from 'react'
+import './utils/App.css'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 /**
  * Import all page components here
  */
-import HomePage from './pages/HomePage';
-import NewUser from './pages/NewUser';
-import MyInfo from './pages/MyInfo';
+import HomePage from './pages/HomePage'
+import NewUser from './pages/NewUser'
+import MyInfo from './pages/MyInfo'
+import NewGarden from './pages/NewGarden'
 
 export const options = {
-  baseURL: "http://localhost:5001",
-  responseType: "application/json"
-};
+  baseURL: 'http://localhost:5001',
+  responseType: 'application/json',
+}
 
 /**
  * All routes go here.
@@ -38,6 +34,9 @@ export default function App() {
             <li>
               <Link to="/users/signup">Signup</Link>
             </li>
+            <li>
+              <Link to="/mygarden">My Garden</Link>
+            </li>
           </ul>
         </nav>
 
@@ -50,11 +49,14 @@ export default function App() {
           <Route path="/users/signup">
             <NewUser />
           </Route>
+          <Route path="/mygarden">
+            <NewGarden />
+          </Route>
           <Route path="/">
             <HomePage />
           </Route>
         </Switch>
       </div>
     </Router>
-  );
+  )
 }
