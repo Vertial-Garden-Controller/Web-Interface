@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios'
 import { options } from '../App'
-import { number, func } from 'prop-types'
 import { Link } from 'react-router-dom'
 // import Routes from '../routes'
 
@@ -14,9 +13,8 @@ class NewUser extends React.Component {
       lastname: '',
       emailAddress: '',
       password: '',
-      user_id: 1,
+      success: false,
     }
-    this.value = 0
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -52,7 +50,9 @@ class NewUser extends React.Component {
         `)
         }
       })
-    this.props.updateUserId(parseInt(res.data.user_id))
+    this.setState({
+      success: res.data.success
+    })
   }
 
   async handleSubmit(event) {
@@ -61,6 +61,17 @@ class NewUser extends React.Component {
   }
 
   render() {
+    if (this.state.success !== false) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            Signup Success!
+            <Link to="/user/login">Login</Link>
+          </header>
+        </div>
+      )
+    }
+
     return (
       <div className="App">
         <header className="App-header">
@@ -121,16 +132,10 @@ class NewUser extends React.Component {
               <input type="submit" value="Submit" />
             </label>
           </form>
-          <Link to="/mygarden">My Garden</Link>
         </header>
       </div>
     )
   }
-}
-
-NewUser.propTypes = {
-  user_id: number,
-  updateUserId: func,
 }
 
 export default NewUser
