@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { options } from '../App'
 import { number } from 'prop-types'
+import { Link } from 'react-router-dom'
 
 class MyInfo extends React.Component {
   constructor(props) {
@@ -46,6 +47,9 @@ class MyInfo extends React.Component {
           </p>
           <p>Email Address: {this.state.user.email}</p>
           <p>Password: {this.state.user.password}</p>
+          <p>
+            <Link to="/user/login">Logout</Link>
+          </p>
         </header>
       </div>
     )

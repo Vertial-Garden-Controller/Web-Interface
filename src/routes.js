@@ -9,7 +9,7 @@ import Login from './pages/Login'
 class Routes extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { user_id: 1 }
+    this.state = { user_id: 0 }
     this.UserIDHandler = this.UserIDHandler.bind(this)
   }
 

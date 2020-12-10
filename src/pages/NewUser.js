@@ -134,6 +134,9 @@ class NewUser extends React.Component {
               <input type="submit" value="Submit" />
             </label>
           </form>
+          <p>
+            <Link to="/">Back</Link>
+          </p>
         </header>
       </div>
     )

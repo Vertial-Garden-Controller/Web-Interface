@@ -56,7 +56,10 @@ class Login extends React.Component {
           <header className="App-header">
             Login Success!
             <Link to="/myinfo">My Information</Link>
-            <Link to="/mygarden">My Garden</Link>
+            {/* <Link to="/mygarden">My Garden</Link> */}
+            <p>
+              <Link to="/">Back</Link>
+            </p>
           </header>
         </div>
       )
@@ -91,6 +94,9 @@ class Login extends React.Component {
               Submit:
               <input type="submit" value="Submit" />
             </label>
+            <p>
+              <Link to="/">Back</Link>
+            </p>
           </form>
         </header>
       </div>
