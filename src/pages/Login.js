@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { func } from 'prop-types'
+import axios from 'axios'
+import { options } from '../App'
 
 class Login extends React.Component {
   constructor(props) {
@@ -8,12 +10,12 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      user_id: 0
+      user_id: 0,
     }
 
-  this.handleInputChange = this.handleInputChange.bind(this)
-  this.handleSubmit = this.handleSubmit.bind(this)
-}
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
 
   handleInputChange(event) {
     const target = event.target
@@ -26,14 +28,29 @@ class Login extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault()
-    this.props.updateUserId(1)
-    this.setState({
-      user_id: 1
-    })
+    const res = await axios
+      .post(
+        '/user/login',
+        { email: this.state.email, password: this.state.password },
+        options
+      )
+      .catch((error) => {
+        if (error.response) {
+          alert(`
+          ERROR: ${error.response.data.error}
+          DETAIL: ${error.response.data.detail}`)
+        }
+      })
+    if (res) {
+      this.props.updateUserId(parseInt(res.data.user_id))
+      this.setState({
+        user_id: parseInt(res.data.user_id),
+      })
+    }
   }
 
   render() {
-    if(this.state.user_id) {
+    if (this.state.user_id) {
       return (
         <div className="App">
           <header className="App-header">
@@ -47,15 +64,15 @@ class Login extends React.Component {
 
     return (
       <div className="App">
-          <header className="App-header">
+        <header className="App-header">
           <p>Enter your email and password to login:</p>
           <form onSubmit={this.handleSubmit}>
             <label>
               Email Address:
               <input
-                name="emailAddress"
+                name="email"
                 type="text"
-                value={this.state.emailAddress}
+                value={this.state.email}
                 onChange={this.handleInputChange}
               />
             </label>
@@ -75,8 +92,8 @@ class Login extends React.Component {
               <input type="submit" value="Submit" />
             </label>
           </form>
-          </header>
-        </div>
+        </header>
+      </div>
     )
   }
 }

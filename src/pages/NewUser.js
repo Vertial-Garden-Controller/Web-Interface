@@ -50,9 +50,11 @@ class NewUser extends React.Component {
         `)
         }
       })
-    this.setState({
-      success: res.data.success
-    })
+    if (res) {
+      this.setState({
+        success: res.data.success,
+      })
+    }
   }
 
   async handleSubmit(event) {
@@ -78,7 +80,7 @@ class NewUser extends React.Component {
           <p>Welcome to Garden Manager*! Signup with the form below:</p>
           <form onSubmit={this.handleSubmit}>
             <label>
-              First Name:
+              First:{' '}
               <input
                 name="firstname"
                 type="text"
@@ -88,7 +90,7 @@ class NewUser extends React.Component {
             </label>
             <br />
             <label>
-              Middle Name:
+              Middle:{' '}
               <input
                 name="middlename"
                 type="text"
@@ -98,7 +100,7 @@ class NewUser extends React.Component {
             </label>
             <br />
             <label>
-              Last Name:
+              Last:{' '}
               <input
                 name="lastname"
                 type="text"
@@ -108,7 +110,7 @@ class NewUser extends React.Component {
             </label>
             <br />
             <label>
-              Email Address:
+              Email Address:{' '}
               <input
                 name="emailAddress"
                 type="text"
@@ -118,7 +120,7 @@ class NewUser extends React.Component {
             </label>
             <br />
             <label>
-              Password:
+              Password:{' '}
               <input
                 name="password"
                 type="password"

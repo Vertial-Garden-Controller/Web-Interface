@@ -22,24 +22,18 @@ class Routes extends React.Component {
   render() {
     return (
       <Router>
+        <Route exact path="/" component={HomePage} />
         <Route
-          exact
-          path="/"
-          component={HomePage}
+          path="/myinfo"
+          render={(props) => <MyInfo {...props} user_id={this.state.user_id} />}
         />
-        <Route path="/myinfo" user_id={this.state.user_id} component={MyInfo} />
         <Route
           path="/mygarden"
           render={(props) => (
             <NewGarden {...props} user_id={this.state.user_id} />
           )}
         />
-        <Route
-          path="/user/signup"
-          render={(props) => (
-            <NewUser {...props} />
-          )}
-        />
+        <Route path="/user/signup" render={(props) => <NewUser {...props} />} />
         <Route
           path="/user/login"
           render={(props) => (

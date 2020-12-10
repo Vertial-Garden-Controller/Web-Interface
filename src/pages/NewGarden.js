@@ -31,9 +31,11 @@ class NewGarden extends React.Component {
           `)
         }
       })
-    this.setState({
-      firstname: res.data.user.firstname,
-    })
+    if (res) {
+      this.setState({
+        firstname: res.data.user.firstname,
+      })
+    }
   }
 
   handleInputChange(event) {
