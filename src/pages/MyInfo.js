@@ -1,74 +1,59 @@
-import React from 'react';
-import axios from 'axios';
-import { options } from '../App';
+import React from 'react'
+import axios from 'axios'
+import { options } from '../App'
+import { number } from 'prop-types'
 
 class MyInfo extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+    console.log(this.props.user_id)
     this.state = {
       user: {},
-      user_id: 0
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+      user_id: 0,
+    }
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
-
-  handleSubmit(event) {
-    axios.get(`/user/${this.state.user_id}`, options)
-    .then((response) => {
-      alert(`
-        User information:
-        First name: ${response.data.user.firstname},
-        Middle name: ${response.data.user.middlename ? response.data.user.middlename : "*not provided"},
-        Last name: ${response.data.user.lastname ? response.data.user.lastname : "*not provided"},
-        Email address: ${response.data.user.email},
-        password (shh): ${response.data.user.password ? response.data.user.password : "*not provided"}
-      `);
-    })
-    .catch((error) => {
-      alert(`
-        ERROR: ${error.response.data.error}
-        DETAIL: ${error.response.data.detail}
-      `)
-    });
-    event.preventDefault();
+  async componentDidMount() {
+    const res = await axios
+      .get(`/user/${this.props.user_id}`, options)
+      .catch((error) => {
+        if (error.response) {
+          alert(`
+          ERROR: ${error.response.data.error}
+          DETAIL: ${error.response.data.detail}`)
+        }
+      })
+    if (res) {
+      this.setState({
+        user: res.data.user,
+      })
+    }
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
+          <p>My Info:</p>
+          <p>First: {this.state.user.firstname}</p>
           <p>
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                User Id:
-                <input
-                name="user_id"
-                type="number"
-                value={this.state.user_id}
-                onChange={this.handleInputChange} />
-              </label>
-              <br />
-              <label>
-              Submit: 
-              <input type="submit" value="Submit" />
-            </label>
-            </form>
+            Middle:{' '}
+            {this.state.user.middlename ? this.state.user.middlename : '<none>'}
           </p>
+          <p>
+            Last:{' '}
+            {this.state.user.lastname ? this.state.user.lastname : '<none>'}
+          </p>
+          <p>Email Address: {this.state.user.email}</p>
+          <p>Password: {this.state.user.password}</p>
         </header>
       </div>
-    );
+    )
   }
 }
 
-export default MyInfo;
+MyInfo.propTypes = {
+  user_id: number,
+}
+
+export default MyInfo

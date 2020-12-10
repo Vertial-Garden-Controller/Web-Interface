@@ -1,114 +1,143 @@
-import React from 'react';
-import axios from 'axios';
-import { options } from '../App';
+import React from 'react'
+import axios from 'axios'
+import { options } from '../App'
+import { Link } from 'react-router-dom'
+// import Routes from '../routes'
 
 class NewUser extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       firstname: '',
       middlename: '',
       lastname: '',
       emailAddress: '',
       password: '',
-    };
+      success: false,
+    }
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+    const target = event.target
+    const value = target.value
+    const name = target.name
     this.setState({
-      [name]: value
-    });
+      [name]: value,
+    })
   }
 
-  handleSubmit(event) {
-    axios.post('/user/signup', {
-      firstname: this.state.firstname,
-      middlename: this.state.middlename,
-      lastname: this.state.lastname,
-      email: this.state.emailAddress,
-      password: this.state.password,
-    }, options)
-    .then(function (response) {
-      alert("Your User Id is: " + response.data.user_id);
-    })
-    .catch(function (error) {
-      alert(`
-        ERROR: ${error.response.data.error}
-        DETAIL: ${error.response.data.detail}
-      `)
-    });
-    event.preventDefault();
+  async postNewUser() {
+    const res = await axios
+      .post(
+        '/user/signup',
+        {
+          firstname: this.state.firstname,
+          middlename: this.state.middlename,
+          lastname: this.state.lastname,
+          email: this.state.emailAddress,
+          password: this.state.password,
+        },
+        options
+      )
+      .catch((error) => {
+        if (error.response) {
+          alert(`
+          ERROR: ${error.response.data.error}
+          DETAIL: ${error.response.data.detail}
+        `)
+        }
+      })
+    if (res) {
+      this.setState({
+        success: res.data.success,
+      })
+    }
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault()
+    await this.postNewUser()
   }
 
   render() {
+    if (this.state.success !== false) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            Signup Success!
+            <Link to="/user/login">Login</Link>
+          </header>
+        </div>
+      )
+    }
+
     return (
       <div className="App">
         <header className="App-header">
-          <p>
-            Welcome to Garden Manager*!
-            Signup with the form below:
-          </p>
+          <p>Welcome to Garden Manager*! Signup with the form below:</p>
           <form onSubmit={this.handleSubmit}>
             <label>
-              First Name:
+              First:{' '}
               <input
                 name="firstname"
                 type="text"
                 value={this.state.firstname}
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+              />
             </label>
             <br />
             <label>
-              Middle Name:
+              Middle:{' '}
               <input
                 name="middlename"
                 type="text"
                 value={this.state.middlename}
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+              />
             </label>
             <br />
             <label>
-              Last Name:
+              Last:{' '}
               <input
                 name="lastname"
                 type="text"
                 value={this.state.lastname}
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+              />
             </label>
             <br />
             <label>
-              Email Address:
+              Email Address:{' '}
               <input
                 name="emailAddress"
                 type="text"
                 value={this.state.emailAddress}
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+              />
             </label>
             <br />
             <label>
-              Password:
+              Password:{' '}
               <input
                 name="password"
                 type="password"
                 value={this.state.password}
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+              />
             </label>
             <br />
             <label>
-              Submit: 
+              Submit:
               <input type="submit" value="Submit" />
             </label>
           </form>
         </header>
       </div>
-    );
+    )
   }
 }
 
-export default NewUser;
+export default NewUser
